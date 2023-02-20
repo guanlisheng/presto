@@ -151,6 +151,7 @@ public class HudiMetadata
                 .orElseGet(() -> metastore.getAllDatabases(metastoreContext))
                 .stream()
                 .map(table -> new SchemaTableName(schemaName.get(), table))
+                .filter(table -> HudiTableType.fromInputFormat(metastore.getTable(metastoreContext, table.getSchemaName(), table.getTableName()).get().getStorage().getStorageFormat().getInputFormat()) != HudiTableType.UNKNOWN)
                 .collect(toList());
     }
 
